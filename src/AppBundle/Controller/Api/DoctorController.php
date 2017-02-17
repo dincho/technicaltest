@@ -39,6 +39,9 @@ class DoctorController
         $doctor->addPatient($patient);
         //TODO: persist to storage layer
 
-        return ['doctor' => $doctor];
+        return [
+            'doctor' => $doctor,
+            'msg' => 'Here are the doctor info and their patients',
+        ];
     }
 }

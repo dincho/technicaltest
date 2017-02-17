@@ -26,6 +26,7 @@ class DoctorControllerTest extends WebTestCase
         $this->assertEquals('application/json', $client->getResponse()->headers->get('content-type'));
         $data = json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('doctor', $data);
+        $this->assertArrayHasKey('msg', $data);
         $this->assertArrayHasKey('patients', $data['doctor']);
         $this->assertCount(1, $data['doctor']['patients']);
     }
