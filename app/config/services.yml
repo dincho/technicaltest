@@ -4,6 +4,40 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.api.doctor_controller:
+        class: AppBundle\Controller\Api\DoctorController
+        arguments:
+            - '@validator'
+
+    app.repository.doctor:
+        public: false
+        class: AppBundle\Repository\DoctorRepository
+
+    app.param_converter.doctor:
+        class:        AppBundle\Request\ParamConverter\DoctorParamConverter
+        public: false
+        arguments:
+            - '@app.repository.doctor'
+        tags:
+            - { name: request.param_converter, converter: doctor_converter }
+
+    app.param_converter.deserializer:
+        class:        AppBundle\Request\ParamConverter\DeserializerParamConverter
+        public: false
+        arguments:
+            - '@serializer'
+        tags:
+            - { name: request.param_converter, converter: deserializer_converter }
+
+    app.listener.serialized_response:
+        class: AppBundle\EventListener\SerializedResponseListener
+        arguments:
+            - '@serializer'
+        tags:
+            - {name: kernel.event_listener, event: kernel.view, method: onKernelView }
+
+    app.datetime_normalizer:
+        class: AppBundle\Serializer\Normalizer\DateTimeNormalizer
+        public: false
+        tags:
+            - { name: serializer.normalizer }

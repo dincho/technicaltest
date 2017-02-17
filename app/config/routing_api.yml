@@ -1,0 +1,6 @@
+api_patient:
+    path:     /doctor/{doctor}/patient
+    defaults: { _controller: app.api.doctor_controller:createPatientAction }
+    methods: [POST]
+    requirements:
+        doctor: "\d+"
